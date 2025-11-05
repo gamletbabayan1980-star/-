@@ -1,319 +1,207 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Инфографика для маркетплейсов — Портфолио</title>
-  <meta name="description" content="Премиум-инфографика и карточки для маркетплейсов. Заказать: +7 962 213 20 10" />
-  <!-- Tailwind для быстрого прототипа -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Карточки и инфографика для маркетплейсов</title>
   <style>
-    /* Небольшие улучшения для мобильной читабельности */
-    body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-    /* Плавная анимация при наведении */
-    .card-hover { transition: transform .18s ease, box-shadow .18s ease; }
-    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(16,24,40,.08); }
-    /* Ограничение больших встроенных dataURL в превью */
-    .portfolio-img { object-fit: cover; width: 100%; height: 220px; }
-    @media (max-width: 640px) {
-      .portfolio-img { height: 160px; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #fff;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    section {
+      padding: 80px 0;
+    }
+    h1, h2, h3 {
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    h1 {
+      font-size: 2.5rem;
+      line-height: 1.2;
+    }
+    h2 {
+      font-size: 2rem;
+      text-align: center;
+    }
+    p {
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+    }
+    ul {
+      padding-left: 20px;
+      margin: 20px 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .btn {
+      display: inline-block;
+      background: #ff5722;
+      color: white;
+      padding: 14px 32px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      transition: background 0.3s;
+      text-align: center;
+    }
+    .btn:hover {
+      background: #e64a19;
+    }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px;
+      border-radius: 12px; color: white; text-decoration: none; font-weight: 600;
+      font-size: 1.2rem; transition: opacity 0.2s; width: 100%; justify-content: center;
+    }
+    .contact-btn:hover { opacity: 0.9; }
+    .tel { background: #4CAF50; }
+    .wa  { background: #25D366; }
+    .tg  { background: #0088cc; }
+
+    /* Модальное окно */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: white; padding: 30px; border-radius: 16px;
+      width: 90%; max-width: 500px; text-align: center; position: relative;
+    }
+    .close-modal {
+      position: absolute; top: 15px; right: 15px; font-size: 1.5rem;
+      cursor: pointer; color: #999;
+    }
+    .modal h3 { margin-bottom: 24px; font-size: 1.5rem; }
+    .modal-buttons { display: flex; flex-direction: column; gap: 14px; }
+
+    /* Галерея */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .gallery img:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Футер */
+    footer {
+      text-align: center; padding: 30px 0; border-top: 1px solid #eee; color: #777; font-size: 0.95rem;
+    }
+    .footer-contacts a {
+      color: #0088cc; text-decoration: none; margin: 0 6px;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.6rem; }
+      section { padding: 60px 0; }
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-  <!--
-    README (коротко):
-    - Помести этот файл в корень репозитория GitHub и включи GitHub Pages (ветка main, папка root).
-    - Для динамического (глобального) управления портфолио:
-        Создай файл `images.json` в корне репозитория со списком картинок, пример ниже.
-      Пример images.json:
-      [
-        { "src": "assets/img1.jpg", "title": "Карточка — Электроника", "desc": "Описание" },
-        { "src": "assets/img2.jpg", "title": "Инфографика — Характеристики", "desc": "Описание" }
-      ]
-      Картинки можно положить в папку `assets/` или любой другой путь, Главное — корректно прописать `src`.
-    - Локальные загрузки: админ может загрузить изображения через кнопку "Загрузить фото для портфолио".
-      Эти изображения сохраняются в localStorage браузера (видны в этом браузере).
-    - Кнопка "Скачать JSON портфолио" экспортирует текущие локальные изображения в JSON (dataURL).
-      Админ может скачать этот JSON и дальше использовать данные для заполнения репозитория или для преобразования в файлы.
-  -->
+<body>
 
-  <header class="bg-white shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-600 to-pink-500 flex items-center justify-center text-white font-bold">iM</div>
-        <div>
-          <h1 class="text-lg font-semibold">Инфографика для маркетплейсов</h1>
-          <p class="text-xs text-gray-500">Премиум-инфографика и карточки — рост CTR и конверсии</p>
-        </div>
-      </div>
+  <!-- Hero -->
+  <section class="hero" style="background: #f9f9f9; text-align: center; padding: 100px 0;">
+    <div class="container">
+      <h1>Карточки и инфографика, которые продают на маркетплейсах</h1>
+      <p>Дизайн, одобренный алгоритмами Wildberries, Ozon и Яндекс.Маркет.<br>Повышаем CTR и конверсию — без лишней воды.</p>
+      <button id="openModalBtn" class="btn">👉 Заказать сейчас</button>
+    </div>
+  </section>
 
-      <div class="flex items-center gap-3">
-        <a href="tel:+79622132010" class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-md border border-gray-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h2A1.5 1.5 0 017 3.5V5a1 1 0 01-1 1H6a1 1 0 00-.8.4l-.6.9a11.04 11.04 0 005.7 5.7l.9-.6A1 1 0 0114 11v-.1a1 1 0 011-1h1.5A1.5 1.5 0 0118 10.5v2A1.5 1.5 0 0116.5 14H15a3 3 0 01-3-3V9a2 2 0 00-2-2H8.5A1.5 1.5 0 017 5.5V4A1.5 1.5 0 015.5 2.5h-2A1.5 1.5 0 012 3.5z"/></svg>
-          <span class="text-sm">+7 962 213 20 10</span>
-        </a>
-        <a href="https://wa.me/79622132010" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-green-500 text-white">WhatsApp</a>
+  <!-- Портфолио -->
+  <section style="background: #f9f9f9;">
+    <div class="container">
+      <h2>Мои работы</h2>
+      <p>Примеры карточек и инфографик, которые уже помогли брендам расти на маркетплейсах</p>
+      <div class="gallery">
+        <img src="work1.jpg" alt="Работа 1">
+        <img src="work2.jpg" alt="Работа 2">
+        <img src="work3.jpg" alt="Работа 3">
+        <img src="work4.jpg" alt="Работа 4">
       </div>
     </div>
-  </header>
+  </section>
 
-  <main class="max-w-5xl mx-auto px-4 py-8">
-    <!-- Hero -->
-    <section class="mb-8 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-      <div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold leading-tight">Премиум-инфографика и карточки для маркетплейсов</h2>
-        <p class="mt-3 text-gray-600">Делаем карточки и инфографику, которые продают — понятные блоки, иконки, сравнения и адаптация под мобильный каталог.</p>
-        <div class="mt-5 flex gap-3 flex-wrap">
-          <a href="tel:+79622132010" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Заказать звонок</a>
-          <a href="#portfolio" class="px-4 py-2 border rounded-md">Портфолио</a>
-          <a href="#contact" class="px-4 py-2 border rounded-md">Оставить заявку</a>
-        </div>
+  <!-- Услуги -->
+  <section style="background: #f5f7fa;">
+    <div class="container">
+      <h2>Что я делаю</h2>
+      <ul>
+        <li><strong>Карточки для маркетплейсов</strong><br>Фото + текст + SEO-описание + оформление по актуальным правилам Wildberries, Ozon, Яндекс.Маркет. Без риска блокировки.</li>
+        <li><strong>Инфографика для товаров</strong><br>Наглядные схемы, сравнения, преимущества, инструкции — всё, что убеждает покупателя нажать «Купить».</li>
+        <li><strong>Оптимизация старых карточек</strong><br>Разберу слабые места вашей текущей карточки и улучшу под алгоритмы 2025 года — даже если продажи «стоят на месте».</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Почему я -->
+  <section>
+    <div class="container">
+      <h2>Это не просто «красивые картинки»</h2>
+      <ul>
+        <li>✅ <strong>Знаю требования маркетплейсов на 2025 год</strong> — включая скрытые запреты (например, текст на фото в Ozon)</li>
+        <li>✅ <strong>Фокус на продажи</strong>, а не на «дизайнерскую эстетику» — проверяю всё через призму конверсии</li>
+        <li>✅ <strong>Быстро</strong>: первая версия за 24 часа, срочные заказы — за 6 часов</li>
+        <li>✅ <strong>Правки без ограничений</strong>, пока вы не скажете: «Готово!»</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer>
+    <div class="container">
+      &copy; 2025 — Инфографика и карточки для маркетплейсов
+      <div class="footer-contacts" style="margin-top: 10px;">
+        📞 <a href="tel:+79622132010">+7 (962) 213-20-10</a> |
+        💬 <a href="https://wa.me/79622132010" target="_blank">WhatsApp</a> |
+        📩 <a href="https://t.me/+79622132010" target="_blank">Telegram</a>
       </div>
+    </div>
+  </footer>
 
-      <div class="relative">
-        <div class="rounded-xl overflow-hidden shadow-lg">
-          <img src="https://picsum.photos/seed/hero/1200/800" alt="Пример" class="w-full h-64 sm:h-80 object-cover" />
-        </div>
-        <div class="absolute -bottom-6 left-6 bg-white rounded-xl p-3 shadow hidden sm:block">
-          <p class="text-xs text-gray-500">Примеры оформления</p>
-          <p class="font-medium">Карточки под любую категорию</p>
-        </div>
+  <!-- Модальное окно -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h3>Выберите, как связаться</h3>
+      <div class="modal-buttons">
+        <a href="tel:+79622132010" class="contact-btn tel">📞 Позвонить: +7 (962) 213-20-10</a>
+        <a href="https://wa.me/79622132010" class="contact-btn wa" target="_blank">💬 Написать в WhatsApp</a>
+        <a href="https://t.me/+79622132010" class="contact-btn tg" target="_blank">📩 Написать в Telegram</a>
       </div>
-    </section>
-
-    <!-- Controls for admin (upload + export) -->
-    <section class="mb-8 bg-white p-4 rounded-lg shadow">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h3 class="text-lg font-semibold">Управление портфолио</h3>
-          <p class="text-sm text-gray-500 mt-1">Загружайте фото — они сохранятся в этом браузере. Админ может также обновлять `images.json` в репозитории для глобального отображения.</p>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <!-- file input -->
-          <label class="cursor-pointer inline-flex items-center gap-2 px-3 py-2 border rounded-md bg-white">
-            <input id="fileInput" type="file" accept="image/*" multiple class="hidden" />
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor"><path d="M4 3a2 2 0 00-2 2v2h2V5h12v10h-5v2h5a2 2 0 002-2V5a2 2 0 00-2-2H4z"/><path d="M9 7v6l-3-3H4l5 5 5-5h-2l-3 3V7H9z"/></svg>
-            <span class="text-sm">Загрузить фото</span>
-          </label>
-
-          <!-- clear local storage -->
-          <button id="clearLocal" class="px-3 py-2 border rounded-md text-sm">Очистить локально</button>
-
-          <!-- export json -->
-          <button id="exportJSON" class="px-3 py-2 bg-indigo-600 text-white rounded-md text-sm">Скачать JSON портфолио</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Portfolio grid -->
-    <section id="portfolio" class="mb-10">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-2xl font-semibold">Портфолио — примеры работ</h3>
-        <p class="text-sm text-gray-500">Картинки из репозитория + локальные загрузки</p>
-      </div>
-
-      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- cards will be injected here -->
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="bg-white p-5 rounded-lg shadow mb-8">
-      <h3 class="text-xl font-semibold">Оставить заявку</h3>
-      <p class="text-sm text-gray-600 mt-2">Опишите задачу — мы подготовим КП. Для срочных задач звоните: <a href="tel:+79622132010" class="text-indigo-600">+7 962 213 20 10</a></p>
-
-      <form id="contactForm" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <input name="name" placeholder="Ваше имя" class="p-2 border rounded" />
-        <input name="email" placeholder="Email" class="p-2 border rounded" />
-        <textarea name="message" placeholder="Кратко о задаче" class="p-2 border rounded sm:col-span-2"></textarea>
-        <div class="sm:col-span-2 flex gap-2">
-          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Отправить</button>
-          <a href="https://wa.me/79622132010" target="_blank" class="px-4 py-2 border rounded">Написать в WhatsApp</a>
-        </div>
-      </form>
-    </section>
-
-    <footer class="py-6 text-center text-sm text-gray-500">
-      © <span id="year"></span> Инфографика для маркетплейсов — Тел: <a href="tel:+79622132010" class="text-indigo-600">+7 962 213 20 10</a>
-    </footer>
-  </main>
+    </div>
+  </div>
 
   <script>
-    // Конфигурация:
-    const IMAGES_JSON_PATH = '/images.json'; // путь к images.json в репозитории (от корня)
-    const LOCAL_KEY = 'portfolio_local_v1'; // ключ localStorage для локально загруженных картинок
-
-    // Вспомогателька для создания карточки
-    function createCard(item) {
-      const div = document.createElement('div');
-      div.className = 'bg-white rounded-lg overflow-hidden card-hover shadow';
-      div.innerHTML = `
-        <img src="${item.src}" alt="${escapeHtml(item.title||'')}" class="portfolio-img" />
-        <div class="p-3">
-          <h4 class="font-medium">${escapeHtml(item.title || '')}</h4>
-          <p class="text-sm text-gray-500 mt-2">${escapeHtml(item.desc || '')}</p>
-          <div class="mt-3 flex gap-2">
-            <a href="${item.src}" target="_blank" class="text-sm px-3 py-2 border rounded">Открыть</a>
-            <button class="text-sm px-3 py-2 bg-indigo-600 text-white rounded show-full">Посмотреть</button>
-          </div>
-        </div>
-      `;
-      // добавить обработчик для "Посмотреть" — откроет в новом окне
-      div.querySelector('.show-full').addEventListener('click', () => window.open(item.src,'_blank'));
-      return div;
-    }
-
-    function escapeHtml(str) {
-      if(!str) return '';
-      return str.replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-
-    // Загрузка картинок из images.json (репозиторий)
-    async function loadRepoImages() {
-      try {
-        const resp = await fetch(IMAGES_JSON_PATH, {cache: "no-cache"});
-        if (!resp.ok) throw new Error('no json');
-        const data = await resp.json();
-        if (!Array.isArray(data)) return [];
-        // ожидаем объекты {src, title, desc}
-        return data.map(i => ({
-          src: i.src,
-          title: i.title || '',
-          desc: i.desc || ''
-        }));
-      } catch (e) {
-        // если нет images.json — игнорируем
-        return [];
-      }
-    }
-
-    // Работа с локальным хранилищем
-    function loadLocal() {
-      try {
-        const raw = localStorage.getItem(LOCAL_KEY);
-        if (!raw) return [];
-        return JSON.parse(raw);
-      } catch (e) {
-        console.warn('Не удалось прочитать локальные изображения', e);
-        return [];
-      }
-    }
-    function saveLocal(arr) {
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(arr));
-    }
-    function addLocalImage({src, title='', desc=''}) {
-      const arr = loadLocal();
-      arr.unshift({src, title, desc, id: Date.now()});
-      saveLocal(arr);
-      renderGrid(); // обновим
-    }
-    function clearLocal() {
-      localStorage.removeItem(LOCAL_KEY);
-      renderGrid();
-    }
-
-    // Рендер сетки: сначала репо-изображения (глобальные), затем локальные
-    async function renderGrid() {
-      const grid = document.getElementById('grid');
-      grid.innerHTML = '';
-      const repo = await loadRepoImages();
-      const local = loadLocal();
-
-      // Сначала репо
-      repo.forEach(item => grid.appendChild(createCard(item)));
-      // Затем локальные (они видны только в этом браузере)
-      local.forEach(item => {
-        // пометим локальные
-        const i = Object.assign({}, item);
-        if (!i.title) i.title = 'Локальное фото';
-        if (!i.desc) i.desc = 'Загружено локально';
-        const card = createCard(i);
-        const badge = document.createElement('span');
-        badge.className = 'inline-block text-xs bg-yellow-200 text-yellow-800 rounded px-2 py-1 absolute -mt-8 ml-3';
-        badge.textContent = 'локально';
-        // положим бейдж
-        const wrapper = document.createElement('div');
-        wrapper.className = 'relative';
-        wrapper.appendChild(card);
-        wrapper.appendChild(badge);
-        grid.appendChild(wrapper);
-      });
-
-      // Если сетка пуста — показать подсказку
-      if (repo.length === 0 && local.length === 0) {
-        grid.innerHTML = '<div class="p-6 bg-white rounded-lg shadow text-center text-gray-500">Портфолио пока пусто. Загрузите фото или добавьте images.json в репозиторий.</div>';
-      }
-    }
-
-    // Обработчик выбора файлов
-    document.getElementById('fileInput').addEventListener('change', (e) => {
-      const files = Array.from(e.target.files || []);
-      if (files.length === 0) return;
-      // читаем все файлы как DataURL
-      const readers = files.map(file => new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res({src: r.result, title: file.name, desc: ''});
-        r.onerror = rej;
-        r.readAsDataURL(file);
-      }));
-      Promise.all(readers).then(results => {
-        // Добавляем все в localStorage
-        results.forEach(item => addLocalImage(item));
-        // очистим input
-        e.target.value = '';
-        alert('Файлы загружены и сохранены локально в этом браузере.');
-      }).catch(err => {
-        console.error(err);
-        alert('Ошибка при чтении файлов.');
-      });
-    });
-
-    // Очистка локального хранилища
-    document.getElementById('clearLocal').addEventListener('click', () => {
-      if (confirm('Удалить все локально загруженные изображения? (отмена не восстановит)')) {
-        clearLocal();
-      }
-    });
-
-    // Экспорт локального портфолио в JSON
-    document.getElementById('exportJSON').addEventListener('click', () => {
-      const local = loadLocal();
-      if (!local || local.length === 0) {
-        alert('Локальных изображений нет.');
-        return;
-      }
-      // Формируем JSON с полями src (dataURL), title, desc
-      const exportData = local.map(({src, title, desc}) => ({src, title, desc}));
-      const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: 'application/json;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'portfolio-local-export.json';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-      alert('JSON скачан. Можно использовать его как исходник для материалов или преобразовать в файлы.');
-    });
-
-    // Обработка формы контакта (заглушка)
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const name = fd.get('name') || 'клиент';
-      const email = fd.get('email') || '(не указан)';
-      const msg = fd.get('message') || '(без описания)';
-      alert(`Спасибо, ${name}!\nМы получили заявку:\n\n${msg}\n\nСвяжемся: ${email} или +7 962 213 20 10`);
-      e.target.reset();
-    });
-
-    // Подстановка года
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Запуск рендера
-    renderGrid();
+    const modal = document.getElementById('contactModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModal');
+    openBtn.onclick = () => modal.style.display = 'flex';
+    closeBtn.onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
   </script>
+
 </body>
 </html>
